@@ -1,0 +1,89 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<configuration>
+
+    <include resource="org/springframework/boot/logging/logback/defaults.xml"/>
+    <include resource="org/springframework/boot/logging/logback/console-appender.xml"/>
+
+    <root level="INFO">
+        <appender-ref ref="CONSOLE"/>
+    </root>
+
+    <springProfile name="test, local">
+        <!-- HikariCP(커넥션 풀) 관련 로그를 ERROR 수준으로 설정
+             - ERROR: 치명적인 오류 발생 시에만 로그 출력
+             - 커넥션 풀의 문제(예: 연결 부족, 타임아웃 등)가 발생했을 때만 로그가 남도록 설정 -->
+        <logger level="ERROR" name="com.zaxxer.hikari"/>
+
+        <!-- Hibernate의 실행되는 SQL 쿼리를 DEBUG 수준으로 출력
+             - SQL 쿼리문을 직접 확인할 수 있으며, 애플리케이션에서 실행되는 쿼리를 분석할 때 유용함 -->
+        <logger level="DEBUG" name="org.hibernate.SQL"/>
+
+        <!-- Hibernate에서 PreparedStatement의 바인딩된 파라미터 값을 TRACE 수준으로 출력
+             - TRACE: 가장 상세한 디버깅 정보 제공
+             - SQL 쿼리에 실제로 바인딩된 값들을 확인할 수 있음 (예: `?` 대신 실제 값 출력) -->
+        <logger level="TRACE" name="org.hibernate.type.descriptor.sql.BasicBinder"/>
+
+        <!-- Spring의 웹 필터 관련 로그를 DEBUG 수준으로 출력
+             - Spring MVC의 필터 동작을 디버깅할 때 유용
+             - 예: `OncePerRequestFilter`, `CharacterEncodingFilter` 등의 동작을 확인 가능 -->
+        <logger level="DEBUG" name="org.springframework.web.filter"/>
+
+        <!-- Spring의 RestTemplate 관련 로그를 DEBUG 수준으로 출력
+             - RestTemplate을 이용한 HTTP 요청과 응답을 디버깅할 수 있음
+             - API 호출 시 요청 URL, 헤더, 응답 등을 확인하는 데 유용 -->
+        <logger level="DEBUG" name="org.springframework.web.client.RestTemplate"/>
+    </springProfile>
+
+    <springProfile name="dev">
+        <!-- HikariCP(커넥션 풀) 관련 로그를 ERROR 수준으로 설정
+             - ERROR: 치명적인 오류 발생 시에만 로그 출력
+             - 커넥션 풀의 문제(예: 연결 부족, 타임아웃 등)가 발생했을 때만 로그가 남도록 설정 -->
+        <logger level="ERROR" name="com.zaxxer.hikari"/>
+
+        <!-- Hibernate의 실행되는 SQL 쿼리를 DEBUG 수준으로 출력
+             - SQL 쿼리문을 직접 확인할 수 있으며, 애플리케이션에서 실행되는 쿼리를 분석할 때 유용함 -->
+        <logger level="DEBUG" name="org.hibernate.SQL"/>
+
+        <!-- Hibernate에서 PreparedStatement의 바인딩된 파라미터 값을 TRACE 수준으로 출력
+             - TRACE: 가장 상세한 디버깅 정보 제공
+             - SQL 쿼리에 실제로 바인딩된 값들을 확인할 수 있음 (예: `?` 대신 실제 값 출력) -->
+        <logger level="TRACE" name="org.hibernate.type.descriptor.sql.BasicBinder"/>
+
+        <!-- Spring의 웹 필터 관련 로그를 DEBUG 수준으로 출력
+             - Spring MVC의 필터 동작을 디버깅할 때 유용
+             - 예: `OncePerRequestFilter`, `CharacterEncodingFilter` 등의 동작을 확인 가능 -->
+        <logger level="DEBUG" name="org.springframework.web.filter"/>
+
+        <!-- Spring의 RestTemplate 관련 로그를 DEBUG 수준으로 출력
+             - RestTemplate을 이용한 HTTP 요청과 응답을 디버깅할 수 있음
+             - API 호출 시 요청 URL, 헤더, 응답 등을 확인하는 데 유용 -->
+        <logger level="DEBUG" name="org.springframework.web.client.RestTemplate"/>
+    </springProfile>
+
+    <springProfile name="prod">
+        <!-- HikariCP(커넥션 풀) 관련 로그를 ERROR 수준으로 설정
+             - ERROR: 치명적인 오류 발생 시에만 로그 출력
+             - 커넥션 풀의 문제(예: 연결 부족, 타임아웃 등)가 발생했을 때만 로그가 남도록 설정 -->
+        <logger level="ERROR" name="com.zaxxer.hikari"/>
+
+        <!-- Hibernate의 실행되는 SQL 쿼리를 ERROR 수준으로 출력
+             - SQL 쿼리문을 직접 확인할 수 있으며, 애플리케이션에서 실행되는 쿼리를 분석할 때 유용함 -->
+        <logger level="ERROR" name="org.hibernate.SQL"/>
+
+        <!-- Hibernate에서 PreparedStatement의 바인딩된 파라미터 값을 TRACE 수준으로 출력
+             - TRACE: 가장 상세한 디버깅 정보 제공
+             - SQL 쿼리에 실제로 바인딩된 값들을 확인할 수 있음 (예: `?` 대신 실제 값 출력) -->
+        <logger level="ERROR" name="org.hibernate.type.descriptor.sql.BasicBinder"/>
+
+        <!-- Spring의 웹 필터 관련 로그를 INFO 수준으로 출력
+             - Spring MVC의 필터 동작을 디버깅할 때 유용
+             - 예: `OncePerRequestFilter`, `CharacterEncodingFilter` 등의 동작을 확인 가능 -->
+        <logger level="INFO" name="org.springframework.web.filter"/>
+
+        <!-- Spring의 RestTemplate 관련 로그를 INFO 수준으로 출력
+             - RestTemplate을 이용한 HTTP 요청과 응답을 디버깅할 수 있음
+             - API 호출 시 요청 URL, 헤더, 응답 등을 확인하는 데 유용 -->
+        <logger level="INFO" name="org.springframework.web.client.RestTemplate"/>
+    </springProfile>
+
+</configuration>
