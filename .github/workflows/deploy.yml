@@ -59,3 +59,10 @@ jobs:
           --application-name ${{ env.CODE_DEPLOY_APPLICATION_NAME }} \
           --deployment-group-name ${{ env.CODE_DEPLOY_DEPLOYMENT_GROUP_NAME }} \
           --s3-location bucket=$S3_BUCKET_NAME,bundleType=zip,key=$GITHUB_SHA.zip
+
+      - name: Set database values
+        run: |
+          sed -i "s|\${DB_ENDPOINT}|${{ secrets.DB_ENDPOINT }}|g" ./src/main/resources/application-datasource.yml
+          sed -i "s|\${DB_PORT}|${{ secrets.DB_PORT }}|g" ./src/main/resources/application-datasource.yml
+          sed -i "s|\${DB_USERNAME}|${{ secrets.DB_USERNAME }}|g" ./src/main/resources/application-datasource.yml
+          sed -i "s|\${DB_PASSWORD}|${{ secrets.DB_PASSWORD }}|g" ./src/main/resources/application-datasource.yml
