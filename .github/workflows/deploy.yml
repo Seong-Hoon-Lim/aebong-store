@@ -24,12 +24,19 @@ jobs:
         with:
           java-version: 21
 
-      - name: Set yml file
-        uses: microsoft/variable-substitution@v1
-        with:
-          files: ${{ env.RESOURCE_PATH }}
-        env:
-          override.value: ${{ secrets.DI_FROM_SECRET }}
+      - name: Set environment variables
+        run: |
+          echo "DB_ENDPOINT=${{ secrets.DB_ENDPOINT }}" >> $GITHUB_ENV
+          echo "DB_PORT=${{ secrets.DB_PORT }}" >> $GITHUB_ENV
+          echo "DB_USERNAME=${{ secrets.DB_USERNAME }}" >> $GITHUB_ENV
+          echo "DB_PASSWORD=${{ secrets.DB_PASSWORD }}" >> $GITHUB_ENV
+
+      - name: Replace database values in YAML  # YAML 변수 치환을 빌드 전에 수행
+        run: |
+          sed -i "s|\${DB_ENDPOINT}|${DB_ENDPOINT}|g" ${{ env.RESOURCE_PATH }}
+          sed -i "s|\${DB_PORT}|${DB_PORT}|g" ${{ env.RESOURCE_PATH }}
+          sed -i "s|\${DB_USERNAME}|${DB_USERNAME}|g" ${{ env.RESOURCE_PATH }}
+          sed -i "s|\${DB_PASSWORD}|${DB_PASSWORD}|g" ${{ env.RESOURCE_PATH }}
 
       - name: Grant execute permission for gradlew
         run: chmod +x ./gradlew
@@ -59,10 +66,3 @@ jobs:
           --application-name ${{ env.CODE_DEPLOY_APPLICATION_NAME }} \
           --deployment-group-name ${{ env.CODE_DEPLOY_DEPLOYMENT_GROUP_NAME }} \
           --s3-location bucket=$S3_BUCKET_NAME,bundleType=zip,key=$GITHUB_SHA.zip
-
-      - name: Set database values
-        run: |
-          sed -i "s|\${DB_ENDPOINT}|${{ secrets.DB_ENDPOINT }}|g" ./src/main/resources/application-datasource.yml
-          sed -i "s|\${DB_PORT}|${{ secrets.DB_PORT }}|g" ./src/main/resources/application-datasource.yml
-          sed -i "s|\${DB_USERNAME}|${{ secrets.DB_USERNAME }}|g" ./src/main/resources/application-datasource.yml
-          sed -i "s|\${DB_PASSWORD}|${{ secrets.DB_PASSWORD }}|g" ./src/main/resources/application-datasource.yml
